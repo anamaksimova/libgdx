@@ -36,7 +36,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.R)) dir = false;
 		if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) goRight = false;
 		if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) goRight = true;
-		if (animPositionX + 320  >= Gdx.graphics.getWidth()) goRight = false;
+		if (animPositionX + 60  >= Gdx.graphics.getWidth()) goRight = false;
 		if (animPositionX <= 0) goRight = true;
 		if (!animation.getFrame().isFlipX() && !goRight) animation.getFrame().flip(true, false);
 		if (animation.getFrame().isFlipX() && goRight) animation.getFrame().flip(true, false);
