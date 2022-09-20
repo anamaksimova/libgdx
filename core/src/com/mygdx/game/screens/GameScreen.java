@@ -23,6 +23,8 @@ import com.mygdx.game.Anim;
 import com.mygdx.game.Main;
 import com.mygdx.game.PhysX;
 
+import java.util.ArrayList;
+
 public class GameScreen implements Screen {
     private final Main game;
     private final SpriteBatch batch;
@@ -39,9 +41,11 @@ public class GameScreen implements Screen {
     private final int[] bg;
     private final int[] l1;
     private Body body;
+    public static ArrayList<Body> bodies;
     private final Rectangle heroRect;
 
     public GameScreen(Main game) {
+        bodies = new ArrayList<>();
         animation = new Anim("1sprite.png", 9,6, Animation.PlayMode.LOOP);
         this.game = game;
         batch = new SpriteBatch();
@@ -84,9 +88,9 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) body.applyForceToCenter (new Vector2(10000, 0), true);
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) body.applyForceToCenter (new Vector2(-10000, 0), true);
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) camera.position.y += STEP;
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) body.applyForceToCenter (new Vector2(-10000, 0), true);
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) body.applyForceToCenter (new Vector2(10000, 0), true);
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) body.applyForceToCenter (new Vector2(0, 1000000), true);
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) camera.position.y -= STEP;
         if (Gdx.input.isKeyPressed(Input.Keys.P)) camera.zoom += 0.01f;
         if (Gdx.input.isKeyPressed(Input.Keys.O) && camera.zoom > 0) camera.zoom -= 0.01f;
@@ -116,6 +120,11 @@ public class GameScreen implements Screen {
 
         physX.step();
         physX.debugDraw(camera);
+
+        for (int i = 0; i < bodies.size() ; i++) {
+            physX.destroyBody(bodies.get(i));
+        }
+        bodies.clear();
     }
 
     @Override
