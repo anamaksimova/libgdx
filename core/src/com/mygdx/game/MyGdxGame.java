@@ -20,7 +20,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		animation = new Anim("1sprite.png", 9,6, Animation.PlayMode.LOOP);
+//		animation = new Anim("1sprite.png", 9,6, Animation.PlayMode.LOOP);
 	}
 
 	@Override

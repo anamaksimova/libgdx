@@ -7,10 +7,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Anim {
 //    private Texture img;
-    private final TextureAtlas atlas;
+    private final TextureAtlas atlass;
     private final Animation<TextureRegion> anm;
     private float time;
-    public Anim(String name, int col, int row, Animation.PlayMode playMode){
+    public Anim(String atlas, String action, float duration, Animation.PlayMode playMode){
 //        img = new Texture(name);
 //        TextureRegion region0 = new TextureRegion(img);
 //        int xCnt = region0.getRegionWidth() / col;
@@ -24,9 +24,9 @@ public class Anim {
 //                region1[cnt++] = regions0[i][j];
 //            }
 //        }
-        atlas = new TextureAtlas("unnamed.atlas");
+        atlass = new TextureAtlas(atlas);
 //        anm = new com.badlogic.gdx.graphics.g2d.Animation<TextureRegion>(1/20f, region1);
-        anm = new com.badlogic.gdx.graphics.g2d.Animation<TextureRegion>(1/20f, atlas.findRegions("walk"));
+        anm = new com.badlogic.gdx.graphics.g2d.Animation<TextureRegion>(duration, atlass.findRegions(action));
         anm.setPlayMode(playMode);
         time = 0;
     }
@@ -39,7 +39,7 @@ public class Anim {
     public void setPlayMode(Animation.PlayMode playMode) {anm.setPlayMode(playMode);}
 
     public void dispose(){
-        atlas.dispose();
+        atlass.dispose();
 //        img.dispose();
     }
 }

@@ -28,7 +28,8 @@ import java.util.ArrayList;
 public class GameScreen implements Screen {
     private final Main game;
     private final SpriteBatch batch;
-    private final Anim animation;
+    private final Anim anmWalk;
+    private final Anim anmStand;
     private final Texture img;
 //    private final Rectangle mapSize;
 //    private final ShapeRenderer shapeRenderer;
@@ -43,16 +44,19 @@ public class GameScreen implements Screen {
     private Body body;
     public static ArrayList<Body> bodies;
     private final Rectangle heroRect;
+    private boolean goRight = true;
+    public Anim hero;
 
     public GameScreen(Main game) {
         bodies = new ArrayList<>();
-        animation = new Anim("1sprite.png", 9,6, Animation.PlayMode.LOOP);
+        anmWalk = new Anim("unnamed.atlas", "walk", 1/10f, Animation.PlayMode.LOOP);
+        anmStand = new Anim("unnamed.atlas", "walk", 1/0.1f, Animation.PlayMode.LOOP);
         this.game = game;
         batch = new SpriteBatch();
         img = new Texture("menu2.jpg");
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.zoom = 1.25f;
-
+        hero = anmStand;
         TmxMapLoader tm = new TmxMapLoader();
 //        map = tm.load("map/map1.tmx");
         TiledMap map = new TmxMapLoader().load("map/map2.tmx");
@@ -78,7 +82,6 @@ public class GameScreen implements Screen {
         for (int i = 0; i < objects.size; i++) {
             physX.addObject(objects.get(i));
         }
-
     }
 
     @Override
@@ -88,10 +91,39 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) body.applyForceToCenter (new Vector2(-10000, 0), true);
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) body.applyForceToCenter (new Vector2(10000, 0), true);
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) body.applyForceToCenter (new Vector2(0, 1000000), true);
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) camera.position.y -= STEP;
+        hero.setTime(Gdx.graphics.getDeltaTime());
+        boolean rest = false;
+        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) goRight = false;
+        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) goRight = true;
+//        if (animPositionX + 60  >= Gdx.graphics.getWidth()) goRight = false;
+//        if (animPositionX <= 0) goRight = true;
+        if (!hero.getFrame().isFlipX() && !goRight) hero.getFrame().flip(true, false);
+        if (hero.getFrame().isFlipX() && goRight) hero.getFrame().flip(true, false);
+
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            rest = true;
+            hero = anmWalk;
+            body.applyForceToCenter (new Vector2(-1000, 0), true);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            rest = true;
+            hero = anmWalk;
+            body.applyForceToCenter (new Vector2(1000, 0), true);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            rest = true;
+            hero = anmWalk;
+            body.applyForceToCenter (new Vector2(0, 1000), true);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            rest = true;
+            hero = anmStand;
+            body.applyForceToCenter (new Vector2(0, -1000), true);
+        }
+        if (!rest) {
+            hero = anmStand;
+        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) camera.position.y -= STEP;
         if (Gdx.input.isKeyPressed(Input.Keys.P)) camera.zoom += 0.01f;
         if (Gdx.input.isKeyPressed(Input.Keys.O) && camera.zoom > 0) camera.zoom -= 0.01f;
         camera.position.x = body.getPosition().x;
@@ -107,7 +139,7 @@ public class GameScreen implements Screen {
         heroRect.y = body.getPosition().y - heroRect.height/2;
         batch.begin();
 
-        batch.draw(animation.getFrame(), heroRect.x, heroRect.y, heroRect.width, heroRect.height);
+        batch.draw(hero.getFrame(), heroRect.x, heroRect.y, heroRect.width, heroRect.height);
         batch.end();
 
 
@@ -153,7 +185,7 @@ public class GameScreen implements Screen {
         this.batch.dispose();
         this.img.dispose();
         this.physX.dispose();
-        this.animation.dispose();
+        this.hero.dispose();
         this.mapRenderer.dispose();
     }
 }
