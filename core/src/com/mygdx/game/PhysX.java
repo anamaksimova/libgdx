@@ -34,8 +34,8 @@ public class PhysX {
         polygonShape.setAsBox(rect.width/2, rect.height/2);
 
         fdef.shape = polygonShape;
-        fdef.friction = 0;
-        fdef.density = 1;
+        fdef.friction = 0.85f;
+        fdef.density = 0.05f;
         fdef.restitution = (float) object.getProperties().get("restitution");
 
         Body body;
