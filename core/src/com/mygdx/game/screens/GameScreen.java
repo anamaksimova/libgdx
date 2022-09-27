@@ -19,9 +19,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.mygdx.game.Anim;
-import com.mygdx.game.Main;
-import com.mygdx.game.PhysX;
+import com.mygdx.game.*;
 
 import java.util.ArrayList;
 
@@ -46,9 +44,15 @@ public class GameScreen implements Screen {
     private final Rectangle heroRect;
     private boolean goRight = true;
     public Anim hero;
-
-    public GameScreen(Main game) {
+    private final Anim ball;
+    private final NewFont font;
+    private int score;
+    private  int maxScore;
+    public GameScreen(Main game, String mapName) {
+        font = new NewFont(30);
+        font.setColor(Color.BLACK);
         bodies = new ArrayList<>();
+        ball = new Anim("roll.atlas", "roll", 1/10f, Animation.PlayMode.LOOP);
         anmWalk = new Anim("unnamed.atlas", "walk", 1/10f, Animation.PlayMode.LOOP);
         anmStand = new Anim("unnamed.atlas", "walk", 1/0.1f, Animation.PlayMode.LOOP);
         this.game = game;
@@ -59,7 +63,7 @@ public class GameScreen implements Screen {
         hero = anmStand;
         TmxMapLoader tm = new TmxMapLoader();
 //        map = tm.load("map/map1.tmx");
-        TiledMap map = new TmxMapLoader().load("map/map2.tmx");
+        TiledMap map = new TmxMapLoader().load(mapName);
         mapRenderer = new OrthogonalTiledMapRenderer(map);
         bg = new int[1];
         bg[0] = map.getLayers().getIndex("фон");
@@ -78,10 +82,12 @@ public class GameScreen implements Screen {
         heroRect = tmp.getRectangle();
         body = physX.addObject(tmp);
 
+
         Array<RectangleMapObject> objects = map.getLayers().get("объекты").getObjects().getByType(RectangleMapObject.class);
         for (int i = 0; i < objects.size; i++) {
             physX.addObject(objects.get(i));
         }
+        maxScore = physX.getBodys("roll").size;
     }
 
     @Override
@@ -142,21 +148,27 @@ public class GameScreen implements Screen {
         batch.draw(hero.getFrame(), heroRect.x, heroRect.y, heroRect.width, heroRect.height);
         batch.end();
 
-
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            dispose();
-            game.setScreen(new MenuScreen(game));
-        }
-
         mapRenderer.render(l1);
-
+        batch.begin();
+        font.render(batch, "Шариков собрано: " + String.valueOf(score), 500, Gdx.graphics.getHeight()/10-50);
+        batch.end();
         physX.step();
         physX.debugDraw(camera);
 
         for (int i = 0; i < bodies.size() ; i++) {
             physX.destroyBody(bodies.get(i));
+            score++;
         }
         bodies.clear();
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            dispose();
+            game.setScreen(new MenuScreen(game));
+        }
+
+        if (score == maxScore){
+            dispose();
+            game.setScreen(new GameScreen(game, "map/map3.tmx"));
+        }
     }
 
     @Override
@@ -186,6 +198,7 @@ public class GameScreen implements Screen {
         this.img.dispose();
         this.physX.dispose();
         this.hero.dispose();
+        this.font.dispose();
         this.mapRenderer.dispose();
     }
 }

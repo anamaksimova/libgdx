@@ -58,7 +58,7 @@ public class MenuScreen implements Screen {
 
             if (startRect.contains(x, y)) {
                 dispose();
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new GameScreen(game, "map/map2.tmx"));
             } else {
                 sound.play(1, 1, 0);
             }
