@@ -5,6 +5,9 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import java.util.Iterator;
+import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.screens.PhysBody;
 
 public class PhysX {
     private final World world;
@@ -37,20 +40,38 @@ public class PhysX {
         fdef.friction = 0.85f;
         fdef.density = 0.05f;
         fdef.restitution = (float) object.getProperties().get("restitution");
-
+        String name = "";
+        if (object.getName() != null) name = object.getName();
         Body body;
         body = world.createBody(def);
-        String name = object.getName();
+
+        body.setUserData(new PhysBody(name, new Vector2(rect.x, rect.y), new Vector2(rect.width, rect.height)));
         body.createFixture(fdef).setUserData(name);
         if (name != null && name.equals("hero")) {
-            polygonShape.setAsBox(rect.width/12, rect.height/12, new Vector2(0, -rect.width/2), 0);
-            body.createFixture(fdef).setUserData("ноги");
+            polygonShape.setAsBox(rect.width/3, rect.height/12, new Vector2(0,-rect.width/2), 0);
+            fdef.restitution = 0;
+            body.createFixture(fdef).setUserData("sensor");
             body.getFixtureList().get(body.getFixtureList().size-1).setSensor(true);
+            body.setFixedRotation(true);
+            body.getFixtureList().get(0).setRestitution(0);
+//            polygonShape.setAsBox(rect.width/12, rect.height/12, new Vector2(0, -rect.width/2), 0);
+//            body.createFixture(fdef).setUserData("ноги");
+//            body.getFixtureList().get(body.getFixtureList().size-1).setSensor(true);
         }
 
 
         polygonShape.dispose();
         return body;
+    }
+    public Array<Body> getBodys(String name){
+        Array<Body> ab = new Array<>();
+        world.getBodies(ab);
+        Iterator<Body> it = ab.iterator();
+        while (it.hasNext()){
+            String text = ((PhysBody)it.next().getUserData()).name;
+            if (!text.equals(name)) it.remove();
+        }
+        return ab;
     }
 
     public void setGravity(Vector2 gravity) {world.setGravity(gravity);}

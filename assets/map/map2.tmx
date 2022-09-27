@@ -94,7 +94,7 @@
     <property name="restitution" type="float" value="0"/>
    </properties>
   </object>
-  <object id="30" name="vasya" x="402" y="173.25" width="6.5" height="5.5">
+  <object id="30" name="roll" x="402" y="173.25" width="6.5" height="5.5">
    <properties>
     <property name="BodyType" value="DynamicBody"/>
     <property name="friction" type="float" value="0"/>
@@ -102,7 +102,7 @@
     <property name="restitution" type="float" value="0.25"/>
    </properties>
   </object>
-  <object id="31" name="vasya" x="409.5" y="159.25" width="6.5" height="5.5">
+  <object id="31" name="roll" x="409.5" y="159.25" width="6.5" height="5.5">
    <properties>
     <property name="BodyType" value="DynamicBody"/>
     <property name="friction" type="float" value="0"/>
@@ -110,7 +110,7 @@
     <property name="restitution" type="float" value="0.25"/>
    </properties>
   </object>
-  <object id="32" name="vasya" x="435.75" y="154.75" width="6.5" height="5.5">
+  <object id="32" name="roll" x="435.75" y="154.75" width="6.5" height="5.5">
    <properties>
     <property name="BodyType" value="DynamicBody"/>
     <property name="friction" type="float" value="0"/>
@@ -118,7 +118,7 @@
     <property name="restitution" type="float" value="0.25"/>
    </properties>
   </object>
-  <object id="33" name="vasya" x="403.5" y="210.75" width="6.5" height="5.5">
+  <object id="33" name="roll" x="403.5" y="210.75" width="6.5" height="5.5">
    <properties>
     <property name="BodyType" value="DynamicBody"/>
     <property name="friction" type="float" value="0"/>
@@ -126,7 +126,7 @@
     <property name="restitution" type="float" value="0.25"/>
    </properties>
   </object>
-  <object id="34" name="vasya" x="425.25" y="185.75" width="6.5" height="5.5">
+  <object id="34" name="roll" x="425.25" y="185.75" width="6.5" height="5.5">
    <properties>
     <property name="BodyType" value="DynamicBody"/>
     <property name="friction" type="float" value="0"/>
@@ -134,7 +134,7 @@
     <property name="restitution" type="float" value="0.25"/>
    </properties>
   </object>
-  <object id="35" name="vasya" x="356" y="190" width="6.5" height="5.5">
+  <object id="35" name="roll" x="356" y="190" width="6.5" height="5.5">
    <properties>
     <property name="BodyType" value="DynamicBody"/>
     <property name="friction" type="float" value="0"/>
@@ -142,7 +142,7 @@
     <property name="restitution" type="float" value="0.25"/>
    </properties>
   </object>
-  <object id="36" name="vasya" x="372.25" y="158" width="6.5" height="5.5">
+  <object id="36" name="roll" x="372.25" y="158" width="6.5" height="5.5">
    <properties>
     <property name="BodyType" value="DynamicBody"/>
     <property name="friction" type="float" value="0"/>
@@ -150,7 +150,7 @@
     <property name="restitution" type="float" value="0.25"/>
    </properties>
   </object>
-  <object id="37" name="vasya" x="388.25" y="189" width="6.5" height="5.5">
+  <object id="37" name="roll" x="388.25" y="189" width="6.5" height="5.5">
    <properties>
     <property name="BodyType" value="DynamicBody"/>
     <property name="friction" type="float" value="0"/>
